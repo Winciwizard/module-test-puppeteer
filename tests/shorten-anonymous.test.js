@@ -14,10 +14,28 @@ describe("Shorten Anonymous", () => {
         await page.$eval( '#shorten', el => el.click() );
         await page.waitForSelector('input.result-box');
         const val = await page.$eval('input.result-box', el => el.value);
-        expect(val).toMatch(/^http:\/\/polr\.alwaysdata\.net\/[0-9]+/);
+        expect(val).toMatch(/^http:\/\/polr\.alwaysdata\.net\/[a-z0-9]+/);
         await page.screenshot({path: './tests/img/shorten2.png'});
     }, timeout);
 
+    // verification du lien customisé
+    test('custom shorten', async () => {
+        await page.goto('http://polr.alwaysdata.net');
+        await page.waitForSelector('.long-link-input');
+        await page.type('.long-link-input', 'https://blog.orijina.com');
+        await page.screenshot({path: './tests/img/shorten-custom1.png'});
+        await page.waitForSelector('#show-link-options');
+        await page.$eval( '#show-link-options', el => el.click() );
+        await page.waitForSelector('.custom-url-field');
+        await page.type('.custom-url-field', 'orijina-blog');
+        await page.screenshot({path: './tests/img/shorten-custom2.png'});
+        await page.waitForSelector('#check-link-availability');
+        await page.$eval( '#check-link-availability', el => el.click() );
+        await page.waitForSelector('link-availability-status');
+        const val = await page.$eval('link-availability-status', el => el.value);
+        expect(val).toMatch(" Available");
+        await page.screenshot({path: './tests/img/shorten-custom3.png'});
+    }, timeout);
 
     // cette fonction est lancée avant chaque test de cette
     // série de tests
