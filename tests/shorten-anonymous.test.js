@@ -31,10 +31,11 @@ describe("Shorten Anonymous", () => {
         await page.screenshot({path: './tests/img/shorten-custom2.png'});
         await page.waitForSelector('#check-link-availability');
         await page.$eval( '#check-link-availability', el => el.click() );
+        await page.screenshot({path: './tests/img/shorten-custom3.png'});
         await page.waitForSelector('#link-availability-status i.fa-check');
         const html = await page.$eval('#link-availability-status', el => el.innerHTML);
         expect(html).toContain("Available");
-        await page.screenshot({path: './tests/img/shorten-custom3.png'});
+        await page.screenshot({path: './tests/img/shorten-custom4.png'});
     }, timeout);
 
     // cette fonction est lancée avant chaque test de cette
